@@ -9,20 +9,15 @@ class LinkedList
 {
     struct Node
     {
-        Node(T v) : value(v)
-        {
-            std::cout << "Node, constructing: " << value << '\n';
-        };
-        ~Node()
-        {
-            std::cout << "Node, destructing: " << value << '\n';
-        }
+        Node(T v) : value(v){};
+        ~Node() = default;
         T value;
         Node *next = nullptr;
     };
 
 public:
     Node *head = nullptr;
+    Node *tail = nullptr;
 
 public:
     size_t length = 0;
@@ -54,7 +49,7 @@ public:
 
         if (is_empty())
         {
-            head = node;
+            head = tail = node;
         }
         else
         {
@@ -66,20 +61,15 @@ public:
     void push(T value)
     {
         Node *node = new Node(value);
-        Node *last = head;
 
         if (is_empty())
         {
-            head = node;
+            head = tail = node;
         }
         else
         {
-            while (last->next != nullptr)
-            {
-                last = last->next;
-            }
-
-            last->next = node;
+            tail->next = node;
+            tail = node;
         }
 
         length++;
@@ -92,28 +82,27 @@ public:
             return std::nullopt;
         }
 
-        if (length == 1)
+        if (head == tail)
         {
-            T last_value = head->value;
-            delete head;
-            head = nullptr;
+            T old_value = tail->value;
+            delete tail;
+            head = tail = nullptr;
             length--;
 
-            return std::optional<T>{last_value};
+            return std::optional<T>{old_value};
         }
 
-        Node *last = head;
-        Node *second_last = last;
+        Node *current = head;
 
-        while (last->next != nullptr)
+        while (current->next != tail)
         {
-            second_last = last;
-            last = last->next;
+            current = current->next;
         }
 
-        T old_value = last->value;
-        delete last;
-        second_last->next = nullptr;
+        T old_value = tail->value;
+        delete tail;
+        tail = current;
+        tail->next = nullptr;
         length--;
 
         return std::optional<T>{old_value};
