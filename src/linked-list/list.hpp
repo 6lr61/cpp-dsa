@@ -15,6 +15,36 @@ class LinkedList
         Node *next = nullptr;
     };
 
+    class Iterator
+    {
+    protected:
+        Node *node;
+
+    public:
+        Iterator(Node *n) : node(n){};
+        ~Iterator() = default;
+
+        Iterator &operator++()
+        {
+            if (node)
+            {
+                node = node->next;
+            }
+
+            return *this;
+        }
+
+        bool operator!=(const Iterator &iterator)
+        {
+            return node != iterator.node;
+        }
+
+        T &operator*()
+        {
+            return node->value;
+        }
+    };
+
 public:
     Node *head = nullptr;
     Node *tail = nullptr;
@@ -42,20 +72,66 @@ public:
         return head == nullptr;
     }
 
-    void insert(T value)
+    Iterator begin()
+    {
+        return Iterator{head};
+    }
+
+    Iterator end()
+    {
+        return Iterator{nullptr};
+    }
+
+    // Indexes past the end of the list are ignored,
+    // and new values are inserted at the end
+    void insert(T value, size_t index = 0)
     {
         Node *node = new Node(value);
-        length++;
 
+        // Insert into empty list
         if (is_empty())
         {
             head = tail = node;
+            length++;
+
+            return;
         }
-        else
+
+        // Insert at the begining
+        if (index == 0)
         {
             node->next = head;
             head = node;
+            length++;
+
+            return;
         }
+
+        // Insert at the end
+        if (index >= length)
+        {
+            tail->next = node;
+            tail = node;
+            length++;
+
+            return;
+        }
+
+        Node *current = head;
+        Node *previous = head;
+
+        // Find the node at index - 1
+        for (size_t i = 0; i < index; i++)
+        {
+            previous = current;
+            current = current->next;
+        }
+
+        auto next = previous->next;
+        previous->next = node;
+        node->next = next;
+
+        length++;
     }
 
     void push(T value)
@@ -103,6 +179,27 @@ public:
         delete tail;
         tail = current;
         tail->next = nullptr;
+        length--;
+
+        return std::optional<T>{old_value};
+    }
+
+    std::optional<T> shift()
+    {
+        if (is_empty())
+        {
+            return std::nullopt;
+        }
+
+        if (head == tail)
+        {
+            return pop();
+        }
+
+        Node *next = head->next;
+        T old_value = head->value;
+        delete head;
+        head = next;
         length--;
 
         return std::optional<T>{old_value};
