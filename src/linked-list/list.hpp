@@ -1,5 +1,7 @@
+#ifndef LINKED_LIST_HPP
+#define LINKED_LIST_HPP
+
 #include <iostream>
-#include <stdexcept>
 #include <optional>
 
 template <typename T>
@@ -117,3 +119,5 @@ public:
         return std::optional<T>{old_value};
     }
 };
+
+#endif
