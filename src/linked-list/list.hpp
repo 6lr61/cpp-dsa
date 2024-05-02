@@ -204,6 +204,24 @@ public:
 
         return std::optional<T>{old_value};
     }
+
+    void reverse()
+    {
+        Node *previous = nullptr;
+        Node *current = head;
+        tail = head;
+        Node *next;
+
+        while (current)
+        {
+            next = current->next;
+            current->next = previous;
+            previous = current;
+            current = next;
+        }
+
+        head = previous;
+    }
 };
 
 #endif
