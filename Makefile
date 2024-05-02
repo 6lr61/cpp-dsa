@@ -1,7 +1,8 @@
-VPATH = src:../headers
+VPATH = src
 DIST = dist
 CPPFLAGS = 
-CXXFLAGS = -Wall -Wextra -Wpedantic -std=c++2b
+CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++23
+CXX = g++
 
 all: $(DIST)/test dist
 
