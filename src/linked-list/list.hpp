@@ -59,7 +59,7 @@ public:
         Node *next = this->head;
         Node *old = next;
 
-        while (next != nullptr)
+        while (next)
         {
             old = next;
             next = next->next;
