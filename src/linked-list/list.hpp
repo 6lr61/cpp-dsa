@@ -193,7 +193,12 @@ public:
 
         if (head == tail)
         {
-            return pop();
+            T old_value = head->value;
+            delete head;
+            head = tail = nullptr;
+            length--;
+
+            return std::optional<T>{old_value};
         }
 
         Node *next = head->next;
