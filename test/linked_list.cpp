@@ -57,14 +57,28 @@ TEST_CASE("Pop a single element") {
   REQUIRE(list.empty());
 }
 
-TEST_CASE("Print content") {
+TEST_CASE("Assign to vector using iterators") {
   LinkedList<int> list;
-  list.push_front(123);
-  list.push_front(234);
-  list.push_front(345);
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
 
   std::vector<int> vector;
   vector.assign(list.begin(), list.end());
 
-  REQUIRE(vector == std::vector{345, 234, 123});
+  REQUIRE(vector == std::vector{3, 2, 1});
+}
+
+TEST_CASE("Print content") {
+  LinkedList<int> list;
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
+
+  list.reverse();
+
+  std::vector<int> vector;
+  vector.assign(list.begin(), list.end());
+
+  REQUIRE(vector == std::vector{1, 2, 3});
 }

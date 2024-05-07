@@ -112,6 +112,21 @@ public:
       head = next;
     }
   }
+
+  void reverse() noexcept {
+    Node *previous = nullptr;
+    Node *current = head;
+    Node *next;
+
+    while (current) {
+      next = current->next;
+      current->next = previous;
+      previous = current;
+      current = next;
+    }
+
+    head = previous;
+  }
 };
 
 #endif
