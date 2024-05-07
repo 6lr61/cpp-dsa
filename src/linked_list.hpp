@@ -54,8 +54,8 @@ private:
       return old;
     }
 
-    friend bool operator==(const Iterator &a, const Iterator &b) {
-      return a.node == b.node;
+    bool operator==(const Iterator &iterator) const {
+      return node == iterator.node;
     };
   };
 
