@@ -1,17 +1,10 @@
 VPATH = src
 DIST = dist
-CPPFLAGS = 
-CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++23
-CXX = g++
 
-all: $(DIST)/test dist
+all: tests
 
-dist:
-	mkdir dist
+tests:
+	cd test && $(MAKE) 
 
-$(DIST)/test: linked-list/test.cpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^
-
-PHONY clean:
 clean:
-	-rm dist/*
+	cd test && $(MAKE) clean
