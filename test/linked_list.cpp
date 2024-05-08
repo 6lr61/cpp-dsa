@@ -140,3 +140,81 @@ TEST_CASE("Sort a list with a single element") {
 
   REQUIRE(list.front() == 1);
 }
+
+TEST_CASE("Remove all twos") {
+  LinkedList<int> list;
+  list.push_front(1);
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(2);
+  list.push_front(3);
+  list.push_front(3);
+
+  list.remove(2);
+
+  std::vector<int> vector;
+  vector.assign(list.begin(), list.end());
+
+  REQUIRE(vector == std::vector{3, 3, 1, 1});
+}
+
+TEST_CASE("Remove from empty list") {
+  LinkedList<int> list;
+
+  list.remove(1);
+
+  REQUIRE(list.empty());
+}
+
+TEST_CASE("Remove a single value") {
+  LinkedList<int> list;
+  list.push_front(1);
+
+  list.remove(1);
+
+  REQUIRE(list.empty());
+}
+
+TEST_CASE("Remove from beginning") {
+  LinkedList<int> list;
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
+
+  list.remove(3);
+
+  std::vector<int> vector;
+  vector.assign(list.begin(), list.end());
+
+  REQUIRE(vector == std::vector{2, 1});
+}
+
+TEST_CASE("Remove from end") {
+  LinkedList<int> list;
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
+
+  list.remove(1);
+
+  std::vector<int> vector;
+  vector.assign(list.begin(), list.end());
+
+  REQUIRE(vector == std::vector{3, 2});
+}
+
+TEST_CASE("Remove if predicate is true") {
+  LinkedList<int> list;
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
+  list.push_front(4);
+  list.push_front(5);
+
+  list.remove_if([](int v) { return v % 2 == 0; });
+
+  std::vector<int> vector;
+  vector.assign(list.begin(), list.end());
+
+  REQUIRE(vector == std::vector{5, 3, 1});
+}

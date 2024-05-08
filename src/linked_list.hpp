@@ -2,10 +2,14 @@
 #define LINKED_LIST_HPP
 
 #include <algorithm>
+#include <cstddef>
 #include <functional>
 #include <utility>
 
 template <typename T> class LinkedList {
+public:
+  using size_type = std::size_t;
+
 private:
   struct Node {
     Node *next = nullptr;
@@ -164,6 +168,40 @@ public:
 
       last = curr;
     }
+  }
+
+  size_type remove(const T &value) {
+    return remove_if([=](T &v) { return value == v; });
+  }
+
+  template <typename P> size_type remove_if(P p) {
+    if (empty()) {
+      return 0;
+    }
+
+    Node *prev = nullptr;
+    Node *curr = head;
+    size_type count = 0;
+
+    while (curr) {
+      if (p(curr->value)) {
+        if (prev) {
+          prev->next = curr->next;
+        } else {
+          head = curr->next;
+        }
+
+        Node *next = curr->next;
+        delete curr;
+        count++;
+        curr = next;
+      } else {
+        prev = curr;
+        curr = curr->next;
+      }
+    }
+
+    return count;
   }
 };
 
