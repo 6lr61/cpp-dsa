@@ -161,6 +161,8 @@ public:
         prev = curr;
         curr = next;
       }
+
+      last = curr;
     }
   }
 };
