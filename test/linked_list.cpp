@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <catch2/catch_test_macros.hpp>
+#include <functional>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -81,4 +82,61 @@ TEST_CASE("Print content") {
   vector.assign(list.begin(), list.end());
 
   REQUIRE(vector == std::vector{1, 2, 3});
+}
+
+TEST_CASE("Sort a list of numbers") {
+  LinkedList<int> list;
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
+  list.push_front(4);
+  list.push_front(5);
+
+  list.sort();
+
+  std::vector<int> vector;
+  vector.assign(list.begin(), list.end());
+
+  REQUIRE(vector == std::vector{1, 2, 3, 4, 5});
+}
+
+TEST_CASE("Sort a list of strings") {
+  LinkedList<std::string> list;
+  list.push_front("A");
+  list.push_front("C");
+  list.push_front("D");
+  list.push_front("B");
+  list.push_front("E");
+
+  list.sort();
+
+  std::vector<std::string> vector;
+  vector.assign(list.begin(), list.end());
+
+  REQUIRE(vector == std::vector<std::string>{"A", "B", "C", "D", "E"});
+}
+
+TEST_CASE("Sort a list of numbers using a supplied comparsion function") {
+  LinkedList<int> list;
+  list.push_front(5);
+  list.push_front(4);
+  list.push_front(3);
+  list.push_front(2);
+  list.push_front(1);
+
+  list.sort(std::greater<int>{});
+
+  std::vector<int> vector;
+  vector.assign(list.begin(), list.end());
+
+  REQUIRE(vector == std::vector{5, 4, 3, 2, 1});
+}
+
+TEST_CASE("Sort a list with a single element") {
+  LinkedList<int> list;
+  list.push_front(1);
+
+  list.sort();
+
+  REQUIRE(list.front() == 1);
 }

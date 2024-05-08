@@ -2,6 +2,7 @@
 #define LINKED_LIST_HPP
 
 #include <algorithm>
+#include <functional>
 #include <utility>
 
 template <typename T> class LinkedList {
@@ -126,6 +127,41 @@ public:
     }
 
     head = previous;
+  }
+
+  void sort() { sort(std::less<T>{}); }
+
+  template <typename Compare> void sort(Compare comp) {
+    if (empty()) {
+      return;
+    }
+
+    Node *prev = nullptr;
+    Node *curr = head;
+    Node *last = nullptr;
+
+    while (head != last) {
+      curr = head;
+
+      while (curr->next != last) {
+        Node *next = curr->next;
+
+        if (!comp(curr->value, next->value)) {
+          // Swap elements
+          if (head == curr) {
+            head = next;
+          } else {
+            prev->next = next;
+          }
+
+          curr->next = next->next;
+          next->next = curr;
+        }
+
+        prev = curr;
+        curr = next;
+      }
+    }
   }
 };
 
