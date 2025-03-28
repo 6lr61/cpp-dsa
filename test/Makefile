@@ -1,18 +1,14 @@
 CATCH2_LIBS := $(shell pkg-config --libs catch2-with-main)
 CATCH2_INCLUDES := $(shell pkg-config --cflags catch2-with-main)
-CXXFLAGS = -Wall -Wextra -Wsign-conversion -Werror -Wpedantic --std=c++2b $(CATCH2_INCLUDES)
+CXXFLAGS = -g -Wall -Wextra -Wsign-conversion -Werror -Wpedantic -fsanitize=leak --std=c++23 $(CATCH2_INCLUDES)
 CXX = g++
 
-test: binary_tree
+test: hash_map
 	./$<
 
-binary_tree: binary_tree.cpp ../src/binary_tree.hpp
+%: %.cpp ../src/%.hpp
 	$(CXX) $(CPPLFAGS) $(CXXFLAGS) -o $@ $< $(CATCH2_LIBS)
-
-linked_list: linked_list.cpp ../src/linked_list.hpp
-	$(CXX) $(CPPLFAGS) $(CXXFLAGS) -o $@ $< $(CATCH2_LIBS)
-
 
 PHONY: clean
 clean:
-	-rm linked_list binary_tree
+	-rm linked_list binary_tree hash_map
